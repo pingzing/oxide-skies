@@ -1,0 +1,10 @@
+{
+    "files.autoSave": "off",
+    "rust.racerPath": "C:\\Users\\mcali\\.cargo\\bin\\racer.exe", // Specifies path to Racer binary if it's not in PATH
+    "rust.rustLangSrcPath": "C:\\Users\\mcali\\Desktop\\Repositories\\rust-lang\\rust\\src", // Specifies path to /src directory of local copy of Rust sources
+    "rust.rustfmtPath": "C:\\Users\\mcali\\.cargo\\bin\\rustfmt.exe", // Specifies path to Rustfmt binary if it's not in PATH
+    "rust.cargoPath": "C:\\Program Files\\Rust stable GNU 1.7\\bin\\cargo.exe", // Specifies path to Cargo binary if it's not in PATH    
+    "rust.formatOnSave": true, // Turn on/off autoformatting file on save (EXPERIMENTAL)
+    "rust.checkOnSave": true, // Turn on/off `cargo check` project on save (EXPERIMENTAL)
+    "rust.checkWithClippy": false // Turn on/off `cargo clippy` project on save (EXPERIMENTAL) (cargo-clippy should be installed)        
+}

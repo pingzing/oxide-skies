@@ -1,0 +1,14 @@
+[package]
+name = "rust-weather-widget"
+version = "0.1.0"
+authors = ["Neil McAlister <mcalistern@gmail.com>"]
+build = "build.rs"
+
+[dependencies]
+hyper = "0.7.2"
+serde = "0.7.0"
+serde_json = "0.7.0"
+
+[build-dependencies]
+serde_codegen = "0.7.0"
+syntex = "0.29.0"
