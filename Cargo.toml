@@ -1,5 +1,5 @@
 [package]
-name = "rust-weather-widget"
+name = "oxide-skies"
 version = "0.1.0"
 authors = ["Neil McAlister <mcalistern@gmail.com>"]
 build = "build.rs"
