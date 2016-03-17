@@ -106,7 +106,14 @@ fn get_location(client: &Client, hostname: &str) -> Option<Location> {
 }
 
 fn show_weather(client: &Client, api_key: &str, location: Location) {
-    cache_location(&location);
+    match cache_location(&location) {
+        Ok(_) => println!("Successfully cached location."),    
+        Err(e) => {
+            println!("{}",
+                     format!("Failed to cache location. Will attempt again next run.\nError: {:?}",
+                             e))
+        }
+    }
     if let Some(weather_result) = get_weather(&client, api_key, location) {
         println!("{:?}", weather_result);
     } else {
@@ -145,6 +152,7 @@ fn get_weather(client: &Client, api_key: &str, location: Location) -> Option<Wea
     }
 }
 
+// Todo: return error if CachedLocation is too old.
 fn get_cached_location() -> Result<Location, Error> {
     let mut options = OpenOptions::new();
     options.read(true);
