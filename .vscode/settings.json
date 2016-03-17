@@ -1,4 +1,4 @@
-{
+{    
     "files.autoSave": "off",
     "rust.racerPath": "C:\\Users\\mcali\\.cargo\\bin\\racer.exe", // Specifies path to Racer binary if it's not in PATH
     "rust.rustLangSrcPath": "C:\\Users\\mcali\\Desktop\\Repositories\\rust-lang\\rust\\src", // Specifies path to /src directory of local copy of Rust sources
