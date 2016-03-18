@@ -7,14 +7,19 @@ extern crate time;
 mod weather_structs;
 mod error_extensions;
 
-use hyper::client::*; //todo replae the * with just what I'm using
-use std::path::Path;
 use std::fs;
-use filetime::FileTime;
+use std::env;
+use std::path::Path;
 use std::io;
 use std::io::{Read, Write};
 use std::error::Error;
-use std::env;
+use std::sync::mpsc;
+use std::thread;
+use std::time::Duration;
+
+use filetime::FileTime;
+use hyper::client::*; //todo replae the * with just what I'm using
+
 use weather_structs::location::Location;
 use weather_structs::weather::WeatherResponse;
 
@@ -63,9 +68,14 @@ fn get_location_with_ip(client: &Client, ip_string: &str) -> Result<Location, er
     return get_location(client, url_string);
 }
 
-fn get_location(client: &Client, hostname: &str) -> Result<Location, error_extensions::ErrorExt> {
-    println!("Retrieving location from {}", hostname);
-    let mut geo_ip_response = try!(client.get(hostname).send());    
+fn get_location(client: &Client, hostname: &str) -> Result<Location, error_extensions::ErrorExt> {    
+    print!("Retrieving location from {}", hostname);
+    io::stdout().flush();   
+    
+    let sender = more_dots();
+    let mut geo_ip_response = try!(client.get(hostname).send());   
+    okay_stop_dots(sender);            
+     
     let mut response_string = String::new();
     try!(geo_ip_response.read_to_string(&mut response_string)); 
     println!("{:?}", response_string);
@@ -88,10 +98,14 @@ fn get_weather(client: &Client, api_key: &str, location: Location) -> Result<Wea
                              url = OPEN_WEATHER_MAP_LAT_LON_URL,
                              lat_val = location.latitude.to_string(),
                              lon_val = location.longitude.to_string(),
-                             api_key = api_key);
-
-    println!("Getting weather from {}", url_string);
+                             api_key = api_key);    
+    print!("Getting weather from {}", url_string);
+    io::stdout().flush();
+   
+    let sender = more_dots();          
     let mut response = try!(client.get(&url_string).send());
+    okay_stop_dots(sender);
+               
     let mut response_string = String::new();
     try!(response.read_to_string(&mut response_string)); 
     println!("{:?}", response_string);
@@ -166,3 +180,26 @@ fn deserialize_json<T: serde::Deserialize>(json_string: &str) -> Result<T, error
         }
     }
 }
+
+fn more_dots() -> mpsc::Sender<()> {
+    let (trans, recv) = mpsc::channel();
+    let wait_time = Duration::from_millis(1000);
+    thread::spawn(move|| {       
+       loop{
+           print!(".");
+           io::stdout().flush();
+           thread::sleep(wait_time);
+           match recv.try_recv() {
+               Ok(_) => break,
+               Err(_) => {}              
+           }
+       } 
+    });
+    return trans;
+}
+
+fn okay_stop_dots(sender: mpsc::Sender<()>) {
+    sender.send(());
+    println!("");
+}
+
