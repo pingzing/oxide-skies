@@ -29,7 +29,7 @@ const OPEN_WEATHER_MAP_LAT_LON_URL: &'static str = "http://api.openweathermap.or
 const OWM_API_KEY_FILENAME: &'static str = "owm_api_key.txt";
 const CACHED_LOCATION_FILE: &'static str = "cached_location.txt";
 
-fn main() {
+fn main(){
     if let Ok(api_key) = get_owm_api_key() {
         let args: Vec<String> = env::args().collect();
         let client = Client::new();
