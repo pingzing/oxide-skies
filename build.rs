@@ -54,7 +54,7 @@ fn copy_mingw_lib_to_exe_dir(mingw_path: &str, filename: &str) {
 }
 
 #[cfg(target_family="windows")]
-fn get_platform_kind() -> PlatformKind {
+fn get_platform_kind() -> PlatformKind{
     return PlatformKind::Windows;
 }
 
